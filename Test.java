@@ -12,6 +12,8 @@ public class Test extends Frame implements KeyListener{
     private int width = 800;
     private int size = 500;
     
+    private boolean fullscreen;
+    
     public static void main(String[] args){
         new Test();
     }
@@ -22,6 +24,7 @@ public class Test extends Frame implements KeyListener{
         setSize(width, height);
         setTitle("NOISE TESTER");
         init();
+        fullscreen = false;
         addKeyListener(this);
         addWindowListener( new WindowAdapter() {
                 @Override
@@ -40,7 +43,7 @@ public class Test extends Frame implements KeyListener{
         g.setColor(Color.BLACK);
         int offset = Math.min(getHeight(), getWidth())/10;
         g.setFont(new Font(getFont().getName(), getFont().getStyle(), offset/3));
-        g.drawString("Press 'SPACE' to reload, 'UP' or 'DOWN' for size/currently: " + size, offset, offset);
+        g.drawString("Press 'SPACE' to reload, 'UP' or 'DOWN' for size/currently: " + size + " | 'f' toggle fullscreen", offset, offset);
         
         int n = noise.length;
         //draw random data
@@ -80,6 +83,15 @@ public class Test extends Frame implements KeyListener{
             if(size > 1) size--;
             init();
             repaint();
+        }else if(e.getKeyCode() == KeyEvent.VK_F){
+            if(!fullscreen){
+                GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                device.setFullScreenWindow(this);
+            }else{
+                GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                device.setFullScreenWindow(null);
+            }
+            fullscreen = !fullscreen;
         }
     }
     
